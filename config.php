@@ -1,4 +1,5 @@
 <?php
+//параметры подключения к бд
 class config
 {
     public $pdo;
