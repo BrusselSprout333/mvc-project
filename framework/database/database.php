@@ -1,48 +1,11 @@
 <?php
-require "model.php";
+//просто запросы к бд
 
-class database extends model
+class database
 {
-    public function view($connect)
+    public PDO $pdo;
+    public function connect($dsn, $user, $pass)
     {
-        $query = $connect->pdo->query('SELECT * FROM `employees` ORDER BY `id`');
-
-         echo '<table>';
-         while($row = $query->fetch(PDO::FETCH_OBJ))
-         {
-             ?>
-             <tr>
-                 <th>First Name</th>
-                 <th>Last Name</th>
-                 <th>Date Of Birth</th>
-                 <th>Salary</th>
-             </tr>
-             <?php
-             echo
-               '<tr>
-                  <td>'.$row->first_name.'</td>
-                  <td>'.$row->last_name.'</td>
-                  <td>'.$row->date_of_birth.'</td>
-                  <td>'.$row->salary .'</td>
-                  <td>Edit</td>
-                  <td>Delete</td>
-               </tr>';
-         }
-         echo '</table>';
-    }
-
-    protected function add()
-    {
-        // TODO: Implement add() method.
-    }
-
-    protected function update()
-    {
-        // TODO: Implement update() method.
-    }
-
-    protected function delete()
-    {
-        // TODO: Implement delete() method.
+        $this->pdo = new PDO($dsn, $user, $pass);
     }
 }

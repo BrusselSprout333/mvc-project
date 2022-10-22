@@ -1,12 +1,10 @@
 <?php
 //параметры подключения к бд
+//namespace Main;
+
 class config
 {
-    public $pdo;
-    public $dsn;
-    public function connect()
-    {
-        $this->dsn = 'mysql:host=localhost; dbname=justPHP';
-        $this->pdo = new PDO($this->dsn, 'root', 'root');
-    }
+    static string $dsn = 'mysql:host=localhost; dbname=justPHP';
+    static string $user = 'root';
+    static string $pass = 'root';
 }

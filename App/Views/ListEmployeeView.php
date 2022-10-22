@@ -18,3 +18,4 @@
         <td><button>Delete</button></td>
     </tr>
 </table>
+<button>+ Add New</button>

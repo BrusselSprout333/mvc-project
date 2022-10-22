@@ -1,51 +1,51 @@
 <?php
+//namespace Main;
 error_reporting(E_ALL);
-require 'autoloader.php';
-$connect = new config();
-$connect->connect();
 
-$db = new database();
-$db->view($connect);
+require "config.php";
+require "framework/database/database.php";
+require "framework/database/model.php";
 
-/*
-$query = $pdo->query('SELECT * FROM `employees` ORDER BY `id`');
-echo '<table>';
+model::$db = new database();
+model::$db -> connect(config::$dsn, config::$user, config::$pass);
+//получили объект pdo
+var_dump(model::$db->pdo);
+//$pdo =& model::$db->pdo;
+
+$query = model::$db->pdo->query('SELECT * FROM `employees` ORDER BY `id`');
 while($row = $query->fetch(PDO::FETCH_OBJ))
 {
     ?>
-    <tr>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Date Of Birth</th>
-        <th>Salary</th>
-    </tr>
+    <p><?=$row->first_name ?></p>
     <?php
-    echo '<tr>
-             <td>'.$row->first_name.'</td>
-             <td>'.$row->last_name.'</td>
-             <td>'.$row->date_of_birth.'</td>
-             <td>'.$row->salary .'</td>
-             <td>Edit</td>
-             <td>Delete</td>
-          </tr>';
 }
-echo '</table>';
 
-echo "+ Add New";
+require 'autoloader.php';
+
+$list = new EmployeeController();
+echo 2;
+
+$list->view(model::$db->pdo);
+
 /*
-include "framework/database/database.php";
-database::view();
+
+require "config.php";
+
+$connect = new config();
+$connect->connect();
+var_dump($connect);
+/*
+require 'autoloader.php';
+
+$db = new EmployeeController();
+$db->view($connect);
+
+
+
+
+
 
 /*
- spl_autoload_register(function ($class_name) {
-    include $class_name . '.php';
-});
-
-$obj  = new MyClass1();
-$obj2 = new MyClass2();
-
-
-
 от sql
 <?php
 $stmt = $dbh->prepare("SELECT * FROM REGISTRY where name = ?");

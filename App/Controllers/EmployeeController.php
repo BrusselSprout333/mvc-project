@@ -1,10 +1,12 @@
 <?php
+//основные методы
+//namespace App\Controllers;
 
 class EmployeeController
 {
     public function view($connect)
     {
-        $query = $connect->pdo->query('SELECT * FROM `employees` ORDER BY `id`');
+        $query = $connect->query('SELECT * FROM `employees` ORDER BY `id`');
 
         echo '<table>';
         while($row = $query->fetch(PDO::FETCH_OBJ))
@@ -23,8 +25,8 @@ class EmployeeController
                   <td>'.$row->last_name.'</td>
                   <td>'.$row->date_of_birth.'</td>
                   <td>'.$row->salary .'</td>
-                  <td><a href="delete.php?id='.$row->id.'"><button>Edit</button></a></td>
-                  <td><a href="delete.php?id='.$row->id.'"><button>Delete</button></a></td>
+                  <td><button>Edit</button></a></td>
+                  <td><button>Delete</button></a></td>
                </tr>';
         }
         echo '</table>';
