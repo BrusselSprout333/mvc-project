@@ -2,9 +2,9 @@
 
 abstract class model
 {
-    static $db;
-    abstract static function view($connect);
-    abstract static function add($connect, $data);
-    abstract static function update($connect, $data);
-    abstract static function delete($connect, $id);
+    static object $db;
+    abstract static function view($db);
+    abstract static function add($db, $data);
+    abstract static function update($db, $data);
+    abstract static function delete($db, $id);
 }

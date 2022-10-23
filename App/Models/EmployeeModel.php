@@ -4,10 +4,11 @@
 
 class EmployeeModel extends model
 {
-    static function view($connect)
+    static function view($db): array
     {
+        $query = $db -> select();
         $arr = [];
-        $query = $connect -> query('SELECT * FROM `employees` ORDER BY `id` ASC');
+        $query -> execute();
         while($row = $query->fetch(PDO::FETCH_OBJ)) {
             $arr[$row->id]['id'] = $row->id;
             $arr[$row->id]['first_name'] = $row->first_name;
@@ -18,27 +19,23 @@ class EmployeeModel extends model
         return $arr;
     }
 
-    static function add($connect, $data):void
+    static function add($db, $data):void
     {
-        $query = $connect -> prepare("INSERT INTO `employees` (`id`, `first_name`, `last_name`, `date_of_birth`, `salary`)
-                                    VALUES (NULL, :name, :surname, :date, :salary)");
-        $query->execute(['name' => $data['first-name-add'], 'surname' => $data['last_name'],
+        $query = $db -> insert();
+        $query -> execute(['name' => $data['first-name-add'], 'surname' => $data['last_name'],
                          'date' => $data['day-of-birth'], 'salary' => $data['salary']]);
     }
 
-    static function update($connect, $data):void
+    static function update($db, $data):void
     {
-        $id = $data['id'];
-        $first_name = $data['first-name-update'];
-        $last_name = $data['last-name'];
-        $date = $data['day-of-birth'];
-        $salary = $data['salary'];
-        $connect -> query("UPDATE `employees` SET `first_name` = '$first_name', `last_name` = '$last_name',
-                           `date_of_birth` = '$date', `salary` = '$salary' WHERE `employees`.`id` = '$id'");
+        $query = $db -> update();
+        $query -> execute(['first_name' => $data['first-name-update'], 'last_name' => $data['last-name'],
+                           'date' => $data['day-of-birth'], 'salary' => $data['salary'], 'id' => $data['id']]);
     }
 
-    static function delete($connect, $id):void
+    static function delete($db, $id):void
     {
-        $connect -> query("DELETE FROM `employees` WHERE `id` = '$id'");
+        $query = $db -> delete();
+        $query -> execute(['id' => $id]);
     }
 }

@@ -1,19 +1,17 @@
 <?php
-//основные методы
-//namespace App\Controllers;
 //присылаем данные для изменения - > манипулирует моделью
 
 class EmployeeController
 {
-    private $view;
+    private ViewClass $view;
     function __construct()
     {
         $this -> view = new ViewClass('App/Views');
     }
 
-    public function view($connect)
+    public function view($db)
     {
-        $data = EmployeeModel::view($connect); //получили данные
+        $data = EmployeeModel::view($db); //получили данные
         $this -> view -> render('ViewTemplateStart');
         $this -> view -> render('ListEmployeeView', $data);
         $this -> view -> render('ViewTemplateEnd');
@@ -24,25 +22,25 @@ class EmployeeController
         $this -> view -> render('AddEmployeeView');
     }
 
-    public function add_DB($connect, $data)
+    public function add_DB($db, $data)
     {
-        EmployeeModel::add($connect, $data); //получили данные
+        EmployeeModel::add($db, $data); //получили данные
     }
 
     public function update($id, $first_name, $last_name, $date, $salary)
     {
         $data[0] = ['id' => $id, 'first_name' => $first_name, 'last_name' => $last_name,
-                'date' => $date, 'salary' => $salary];
+                    'date' => $date, 'salary' => $salary];
         $this -> view -> render('EditEmployeeView', $data);
     }
 
-    public function update_DB($connect, $data)
+    public function update_DB($db, $data)
     {
-        EmployeeModel::update($connect, $data); //получили данные
+        EmployeeModel::update($db, $data); //получили данные
     }
 
-    public function delete($connect, $id)
+    public function delete($db, $id)
     {
-        EmployeeModel::delete($connect, $id); //получили данные
+        EmployeeModel::delete($db, $id); //получили данные
     }
 }
