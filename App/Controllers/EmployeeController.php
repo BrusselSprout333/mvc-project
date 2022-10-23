@@ -5,28 +5,44 @@
 
 class EmployeeController
 {
+    private $view;
+    function __construct()
+    {
+        $this -> view = new ViewClass('App/Views');
+    }
+
     public function view($connect)
     {
         $data = EmployeeModel::view($connect); //получили данные
-        //print_r($data);
-        $view = new ViewClass('App/Views'); //создаем представление
-        $view->render('ViewTemplateStart');
-        $view->render('ListEmployeeView', $data);
-        $view->render('ViewTemplateEnd');
+        $this -> view -> render('ViewTemplateStart');
+        $this -> view -> render('ListEmployeeView', $data);
+        $this -> view -> render('ViewTemplateEnd');
     }
 
-    protected function add()
+    public function add()
     {
-        // TODO: Implement add() method.
+        $this -> view -> render('AddEmployeeView');
     }
 
-    protected function update()
+    public function add_DB($connect, $data)
     {
-        // TODO: Implement update() method.
+        EmployeeModel::add($connect, $data); //получили данные
     }
 
-    protected function delete()
+    public function update($id, $first_name, $last_name, $date, $salary)
     {
-        // TODO: Implement delete() method.
+        $data[0] = ['id' => $id, 'first_name' => $first_name, 'last_name' => $last_name,
+                'date' => $date, 'salary' => $salary];
+        $this -> view -> render('EditEmployeeView', $data);
+    }
+
+    public function update_DB($connect, $data)
+    {
+        EmployeeModel::update($connect, $data); //получили данные
+    }
+
+    public function delete($connect, $id)
+    {
+        EmployeeModel::delete($connect, $id); //получили данные
     }
 }
