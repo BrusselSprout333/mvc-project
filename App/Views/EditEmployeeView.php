@@ -1,6 +1,7 @@
 <?php
 //страница изменения
 ?>
+<h1>Edit Employee</h1>
 <form action="POST">
     <label for="first-name">First Name</label>
     <input type="text" id="first-name"><br>

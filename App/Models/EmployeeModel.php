@@ -1,12 +1,21 @@
 <?php
 //тут должны быть данные
-include "framework/database/model.php";
+//application updates to reflect added item
+//include "../../framework/database/model.php";
 
 class EmployeeModel extends model
 {
-    function view($connect)
+    static function view($connect)
     {
-        // TODO: Implement view() method.
+        $arr = [];
+        $query = $connect -> query('SELECT * FROM `employees` ORDER BY `id` ASC');
+        while($row = $query->fetch(PDO::FETCH_OBJ)) {
+            $arr[$row->id]['first_name'] = $row->first_name;
+            $arr[$row->id]['last_name'] = $row->last_name;
+            $arr[$row->id]['date'] = $row -> date_of_birth;
+            $arr[$row->id]['salary'] = $row -> salary;
+        }
+        return $arr;
     }
 
     function add()
