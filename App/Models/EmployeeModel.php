@@ -13,7 +13,6 @@ class EmployeeModel extends model
             $_GET['sort_column'] = 'first_name';
             $_GET['sort_method'] = 'asc';
         }
-        print_r($_GET);
         $query = $db->select($_GET['sort_column'],
             strtoupper($_GET['sort_method']));
         $arr = [];

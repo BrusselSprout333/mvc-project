@@ -1,5 +1,5 @@
 <?php
-//<script>alert("You've been hacked! This is an XSS attack!")</script>
+
 $controller = new EmployeeController();
 foreach ($_GET as &$item) {
     $item = filter_var(trim($item), FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -30,7 +30,6 @@ if (!empty($_POST['first-name-update'])) {
     $controller->update_DB(model::$db, $_POST);
 }
 
-print_r($_GET['method']);
 if (empty($_GET['method'])) {
     $controller->view(model::$db);
 }

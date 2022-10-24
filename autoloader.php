@@ -11,7 +11,7 @@ spl_autoload_register(function ($class) {
 });
 
 
-function search_file($folderName, $fileName)
+function search_file($folderName, $fileName): array
 {
     $found = array();
     $folderName = rtrim($folderName, '/');
@@ -25,7 +25,6 @@ function search_file($folderName, $fileName)
             continue;
         }
 
-        // echo $file." | ".$fileName."<br>";
         // это файл проверяем имя
         if (is_file($file_path)) {
             // если имя файла искомое, то вернем путь до него
