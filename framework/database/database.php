@@ -8,9 +8,9 @@ class database
     {
         $this->pdo = new PDO($dsn, $user, $pass);
     }
-    public function select()
+    public function select($column, $method)
     {
-        return $this -> pdo -> prepare('SELECT * FROM `employees` ORDER BY `first_name` ASC');
+        return $this -> pdo -> prepare('SELECT * FROM `employees` ORDER BY `'.$column.'` '.$method);
     }
     public function insert()
     {

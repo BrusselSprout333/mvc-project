@@ -6,7 +6,11 @@ class EmployeeModel extends model
 {
     static function view($db): array
     {
-        $query = $db -> select();
+        if(empty($_GET['sort_column'])) {
+            $_GET['sort_column'] = 'first_name';
+            $_GET['sort_method'] = 'asc';
+        }
+        $query = $db -> select($_GET['sort_column'], strtoupper($_GET['sort_method']));
         $arr = [];
         $query -> execute();
         while($row = $query->fetch(PDO::FETCH_OBJ)) {
