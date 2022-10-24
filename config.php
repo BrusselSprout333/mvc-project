@@ -1,6 +1,4 @@
 <?php
-//параметры подключения к бд
-//namespace Main;
 
 class config
 {

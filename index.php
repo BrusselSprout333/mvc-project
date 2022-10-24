@@ -5,7 +5,7 @@ require 'autoloader.php';
 
 //связь с бд
 model::$db = new database();
-model::$db -> connect(config::$dsn, config::$user, config::$pass);
+model::$db->connect(config::$dsn, config::$user, config::$pass);
 
 require "App/Controllers/MainController.php";
 
