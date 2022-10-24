@@ -19,4 +19,5 @@ if(!empty($_POST['first-name-update'])) {
     $controller->update_DB(model::$db, $_POST);
 }
 
-$controller -> view(model::$db);
+if(empty($_GET['method']))
+    $controller -> view(model::$db);
