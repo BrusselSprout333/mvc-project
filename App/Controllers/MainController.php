@@ -1,6 +1,11 @@
 <?php
 
 $controller = new EmployeeController();
+
+session_start();
+
+EmployeeController::CheckToken();
+
 foreach ($_GET as &$item) {
     $item = filter_var(trim($item), FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 }

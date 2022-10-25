@@ -4,7 +4,7 @@ class EmployeeModel extends model
 {
     static function view($db): array
     {
-        $sorts1 = ['first_name', 'last_name', 'date-of-birth', 'salary'];
+        $sorts1 = ['first_name', 'last_name', 'date_of_birth', 'salary'];
         $sorts2 = ['asc', 'desc'];
         if (empty($_GET['sort_column'])
             || !in_array($_GET['sort_column'], $sorts1)

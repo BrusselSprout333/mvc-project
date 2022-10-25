@@ -8,9 +8,11 @@
             <button>Edit</button>
         </a>
     </td>
-    <td><a href="index.php?method=delete&id=<?= $id ?>">
+    <td>
+        <a href="index.php?method=delete&id=<?= $id ?>">
             <button>Delete</button>
-        </a></td>
+        </a>
+    </td>
 </tr>
 
 

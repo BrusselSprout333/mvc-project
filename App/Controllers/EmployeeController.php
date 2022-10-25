@@ -48,4 +48,27 @@ class EmployeeController
     {
         EmployeeModel::delete($db, $id); //получили данные
     }
+
+    static function createToken($length = 15): string
+    {
+        $chars = '1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+        $numChars = strlen($chars);
+        $string = '';
+        for ($i = 0; $i < $length; $i++) {
+            $string .= substr($chars, rand(1, $numChars) - 1, 1);
+        }
+        return $string;
+    }
+
+    static function CheckToken()
+    {
+        if ($_POST) {
+            if ($_POST['csrf'] !== $_SESSION['csrf'])  { //не совершать действие
+                $_POST = [];
+                header('Location: index.php?message=Токены не совпадают. Ваши данные отклонены.');
+            }
+        } else {
+            $_SESSION['csrf'] = self::createToken();
+        }
+    }
 }
