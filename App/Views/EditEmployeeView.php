@@ -10,6 +10,7 @@
 <body>
 <h1>Edit Employee</h1>
 <form action="index.php" method="POST">
+    <input type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?>">
     <input type="hidden" name="id" value="<?= $id ?>">
     <label for="first-name">First Name</label>
         <input type="text" name="first-name-update" value="<?= $first_name ?>"><br>
