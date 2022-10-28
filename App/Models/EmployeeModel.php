@@ -1,23 +1,32 @@
 <?php
 
-class EmployeeModel extends model
+class EmployeeModel extends MainModel
 {
-    static function view($db): array
+    function create()
     {
-        $sorts1 = ['first_name', 'last_name', 'date_of_birth', 'salary'];
-        $sorts2 = ['asc', 'desc'];
-        if (empty($_GET['sort_column'])
-            || !in_array($_GET['sort_column'], $sorts1)
-            || !in_array($_GET['sort_method'], $sorts2)
-        ) {
-            $_GET['sort_column'] = 'first_name';
-            $_GET['sort_method'] = 'asc';
-        }
-        $query = $db->select($_GET['sort_column'],
-            strtoupper($_GET['sort_method']));
+        $this->db->query(
+            'CREATE TABLE IF NOT EXISTS `employees` (
+            `id` int(8) NOT NULL,
+            `first_name` varchar(30) NOT NULL,
+            `last_name` varchar(30) NOT NULL,
+            `date_of_birth` date NOT NULL,
+            `salary` float UNSIGNED DEFAULT NULL
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+            ALTER TABLE `employees`
+            ADD PRIMARY KEY (`id`);
+
+            ALTER TABLE `employees` CHANGE `id` 
+            `id` INT(8) NOT NULL AUTO_INCREMENT;');
+    }
+
+    function view($sorts): array
+    {
+        $query = $this->db->prepare('SELECT * FROM `employees` ORDER BY `'
+            . $sorts['sort_column'] . '` ' . $sorts['sort_method']);
         $arr = [];
-        $query->execute();
-        while ($row = $query->fetch(PDO::FETCH_OBJ)) {
+        $this->db->execute($query);
+        while ($row = $this->db->fetch($query)) {
             $arr[$row->id]['id'] = $row->id;
             $arr[$row->id]['first_name'] = $row->first_name;
             $arr[$row->id]['last_name'] = $row->last_name;
@@ -27,11 +36,13 @@ class EmployeeModel extends model
         return $arr;
     }
 
-    static function add($db, $data): void
+    function add($data): void
     {
         settype($data['salary'], 'float');
-        $query = $db->insert();
-        $query->execute([
+        $query = $this->db->prepare(
+            "INSERT INTO `employees` (`first_name`, `last_name`, `date_of_birth`, `salary`) 
+                    VALUES (:name, :surname, :date, :salary)");
+        $this->db->execute($query, [
             'name' => $data['first-name-add'],
             'surname' => $data['last_name'],
             'date' => $data['day-of-birth'],
@@ -39,11 +50,13 @@ class EmployeeModel extends model
         ]);
     }
 
-    static function update($db, $data): void
+    function update($data): void
     {
         settype($data['salary'], 'float');
-        $query = $db->update();
-        $query->execute([
+        $query = $this->db->prepare(
+            "UPDATE `employees` SET `first_name` = :first_name, `last_name` = :last_name,
+                       `date_of_birth` = :date, `salary` = :salary WHERE `employees`.`id` = :id");
+        $this->db->execute($query, [
             'first_name' => $data['first-name-update'],
             'last_name'  => $data['last-name'],
             'date'       => $data['day-of-birth'],
@@ -52,10 +65,10 @@ class EmployeeModel extends model
         ]);
     }
 
-    static function delete($db, $id): void
+    function delete($id): void
     {
-        $query = $db->delete();
-        $query->execute(['id' => $id]);
+        $query = $this->db->prepare("DELETE FROM `employees` WHERE `id` = :id");
+        $this->db->execute($query, ['id' => $id]);
         $_GET['method'] = '';
     }
 }

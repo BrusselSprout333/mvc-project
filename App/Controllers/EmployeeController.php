@@ -3,15 +3,28 @@
 class EmployeeController
 {
     private ViewClass $view;
+    private EmployeeModel $model;
+    private array $sorts;
+    private array $security_data;
 
     function __construct()
     {
+        $this->model = new EmployeeModel();
         $this->view = new ViewClass('App/Views');
     }
 
-    public function view($db)
+    function SecurityTest()
     {
-        $data = EmployeeModel::view($db); //получили данные
+        session_start();
+        $this->security_data['post'] = &$_POST;
+        $this->security_data['session'] = $_SESSION;
+        $this->security_data = SecurityHelper::CheckToken($this->security_data);
+        echo $this->security_data['message'];
+    }
+
+    public function view()
+    {
+        $data = $this->model->view($this->sorts); //получили данные
         $this->view->render('ViewTemplateStart');
         $this->view->render('ListEmployeeView', $data);
         $this->view->render('ViewTemplateEnd');
@@ -22,9 +35,9 @@ class EmployeeController
         $this->view->render('AddEmployeeView');
     }
 
-    public function add_DB($db, $data)
+    public function add_DB($data)
     {
-        EmployeeModel::add($db, $data); //получили данные
+        $this->model->add($data);
     }
 
     public function update($id, $first_name, $last_name, $date, $salary)
@@ -39,36 +52,35 @@ class EmployeeController
         $this->view->render('EditEmployeeView', $data);
     }
 
-    public function update_DB($db, $data)
+    public function update_DB($data)
     {
-        EmployeeModel::update($db, $data); //получили данные
+        $this->model->update($data); //получили данные
     }
 
-    public function delete($db, $id)
+    public function delete($id)
     {
-        EmployeeModel::delete($db, $id); //получили данные
+        $this->model->delete($id);
     }
 
-    static function createToken($length = 15): string
+    public function validateSort($sorts)
     {
-        $chars = '1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-        $numChars = strlen($chars);
-        $string = '';
-        for ($i = 0; $i < $length; $i++) {
-            $string .= substr($chars, rand(1, $numChars) - 1, 1);
+        $sorts1 = ['first_name', 'last_name', 'date_of_birth', 'salary'];
+        $sorts2 = ['asc', 'desc'];
+        if (!in_array($sorts['sort_column'], $sorts1)
+            || !in_array($sorts['sort_method'], $sorts2)
+        ) {
+            $this->sorts['sort_column'] = 'first_name';
+            $this->sorts['sort_method'] = 'asc';
         }
-        return $string;
+        else
+        {
+            $this->sorts['sort_method'] = strtoupper($sorts['sort_method']);
+            $this->sorts['sort_column'] = $sorts['sort_column'];
+        }
     }
 
-    static function CheckToken()
+    public function createTable()
     {
-        if ($_POST) {
-            if ($_POST['csrf'] !== $_SESSION['csrf'])  { //не совершать действие
-                $_POST = [];
-                header('Location: index.php?message=Токены не совпадают. Ваши данные отклонены.');
-            }
-        } else {
-            $_SESSION['csrf'] = self::createToken();
-        }
+        $this->model->create();
     }
 }

@@ -2,9 +2,9 @@
 
 $controller = new EmployeeController();
 
-session_start();
+$controller->createTable(); //создаем таблицу если её не существует
 
-EmployeeController::CheckToken();
+$controller->SecurityTest(); //от csrf атак
 
 foreach ($_GET as &$item) {
     $item = filter_var(trim($item), FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -14,16 +14,18 @@ foreach ($_POST as &$item) {
     $item = filter_var(trim($item), FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 }
 
+$controller->validateSort($_GET);
+
 if ($_GET['method'] == 'add') {
     $controller->add();
 }
 
 if (!empty($_POST['first-name-add'])) {
-    $controller->add_DB(model::$db, $_POST);
+    $controller->add_DB($_POST);
 }
 
 if ($_GET['method'] == 'delete') {
-    $controller->delete(model::$db, $_GET['id']);
+    $controller->delete($_GET['id']);
 }
 
 if ($_GET['method'] == 'update') {
@@ -32,9 +34,9 @@ if ($_GET['method'] == 'update') {
 }
 
 if (!empty($_POST['first-name-update'])) {
-    $controller->update_DB(model::$db, $_POST);
+    $controller->update_DB($_POST);
 }
 
 if (empty($_GET['method'])) {
-    $controller->view(model::$db);
+    $controller->view();
 }
