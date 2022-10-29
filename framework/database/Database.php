@@ -18,7 +18,7 @@ class Database
 
     public function query($string)
     {
-        return self::$pdo->query($string);
+        self::$pdo->query($string);
     }
 
     public function execute($query, $params = [])

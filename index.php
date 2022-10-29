@@ -5,3 +5,8 @@ require 'autoloader.php';
 
 require "App/Controllers/MainController.php";
 
+/*
+- template разделение
+function SecurityTest() в EmployeeController
+
+private Connection $connect; в database
