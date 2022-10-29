@@ -71,9 +71,7 @@ class EmployeeController
         ) {
             $this->sorts['sort_column'] = 'first_name';
             $this->sorts['sort_method'] = 'asc';
-        }
-        else
-        {
+        } else {
             $this->sorts['sort_method'] = strtoupper($sorts['sort_method']);
             $this->sorts['sort_column'] = $sorts['sort_column'];
         }

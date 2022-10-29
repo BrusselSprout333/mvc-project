@@ -4,7 +4,8 @@ abstract class MainModel
 {
     protected Database $db;
 
-    function __construct() {
+    function __construct()
+    {
         $this->db = new Database();
     }
 

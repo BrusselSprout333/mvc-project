@@ -6,15 +6,14 @@ class Connection
 
     function __construct()
     {
-        try{
+        try {
             Database::$pdo = new PDO(Config::DSN, Config::USER, Config::PASS);
-        }
-        catch (PDOException $exc){
+        } catch (PDOException $exc) {
             die("Could not connect to the database: " . $exc->getMessage());
         }
     }
 
-     static function getInstance()
+    static function getInstance()
     {
         $cls = static::class;
         if (!isset(self::$instances[$cls])) {

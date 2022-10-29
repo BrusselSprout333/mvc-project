@@ -43,10 +43,10 @@ class EmployeeModel extends MainModel
             "INSERT INTO `employees` (`first_name`, `last_name`, `date_of_birth`, `salary`) 
                     VALUES (:name, :surname, :date, :salary)");
         $this->db->execute($query, [
-            'name' => $data['first-name-add'],
+            'name'    => $data['first-name-add'],
             'surname' => $data['last_name'],
-            'date' => $data['day-of-birth'],
-            'salary' => $data['salary']
+            'date'    => $data['day-of-birth'],
+            'salary'  => $data['salary']
         ]);
     }
 
