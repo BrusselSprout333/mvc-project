@@ -17,15 +17,15 @@ class EmployeeController
     {
         session_start();
         $this->security_data['post'] = &$_POST;
-        $this->security_data['session'] = $_SESSION;
+        $this->security_data['session'] = &$_SESSION;
         $this->security_data = SecurityHelper::CheckToken($this->security_data);
-        echo $this->security_data['message'];
     }
 
     public function view()
     {
+        $message[0]['message'] = $this->security_data['message'];
         $data = $this->model->view($this->sorts); //получили данные
-        $this->view->render('ViewTemplateStart');
+        $this->view->render('ViewTemplateStart', $message);
         $this->view->render('ListEmployeeView', $data);
         $this->view->render('ViewTemplateEnd');
     }

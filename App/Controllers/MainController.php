@@ -1,7 +1,6 @@
 <?php
 
 $controller = new EmployeeController();
-
 $controller->createTable(); //создаем таблицу если её не существует
 
 $controller->SecurityTest(); //от csrf атак

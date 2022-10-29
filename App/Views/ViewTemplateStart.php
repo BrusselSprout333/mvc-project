@@ -8,6 +8,7 @@
     <title>View</title>
 </head>
 <body>
+<p><?= $message ?></p>
 <table>
     <tr>
         <th>First Name

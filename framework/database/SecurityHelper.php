@@ -16,7 +16,7 @@ class SecurityHelper
     static function CheckToken($data)
     {
         if (!empty($data['post'])) {
-            if ($data['post']['csrf'] === $data['session']['csrf'])  { //не совершать действие
+            if ($data['post']['csrf'] !== $data['session']['csrf'])  { //не совершать действие
                 $data['post'] = [];
                 $data['message'] = 'Токены не совпадают. Ваши данные отклонены.';
             }
