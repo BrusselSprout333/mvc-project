@@ -6,7 +6,7 @@ abstract class MainModel
 
     function __construct()
     {
-        $this->db = new Database();
+        $this->db = Database::getInstance();
     }
 
     abstract function view(string $sort_column, string $sort_method): array;

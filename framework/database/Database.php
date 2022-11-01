@@ -1,19 +1,35 @@
 <?php
 //просто запросы к бд
 
+class Connection
+{
+    public static function get(): PDO
+    {
+        return new PDO(Config::DSN, Config::USER, Config::PASS);
+    }
+}
+
 class Database
 {
-    static PDO $pdo;
-    private Connection $connect;
+    private PDO $pdo;
+    private static ?Database $instance = null;
 
-    function __construct()
+    private function __construct(PDO $pdo)
     {
-        $this->connect = Connection::getInstance();
+        $this->pdo = $pdo;
+    }
+
+    public static function getInstance(): ?Database
+    {
+        if (self::$instance == null) {
+            self::$instance = new Database(Connection::get());
+        }
+        return self::$instance;
     }
 
     public function prepare($string)
     {
-        return self::$pdo->prepare($string);
+        return $this->pdo->prepare($string);
     }
 
     public function execute($query, $params = [])
