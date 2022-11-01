@@ -41,7 +41,7 @@ class EmployeeModel extends MainModel
         string $birth_date,
         float $salary,
         int $id
-    ) {
+    ): void {
         $query = $this->db->prepare(
             "UPDATE `employees` SET `first_name` = :first_name, `last_name` = :last_name,
                        `date_of_birth` = :date, `salary` = :salary WHERE `employees`.`id` = :id");
