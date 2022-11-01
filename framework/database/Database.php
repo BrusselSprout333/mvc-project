@@ -16,11 +16,6 @@ class Database
         return self::$pdo->prepare($string);
     }
 
-    public function query($string)
-    {
-        self::$pdo->query($string);
-    }
-
     public function execute($query, $params = [])
     {
         $query->execute($params);
