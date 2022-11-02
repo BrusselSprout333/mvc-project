@@ -14,19 +14,15 @@ class SecurityHelper
         return $string;
     }
 
-    static function CheckToken($data)
-    {
-        if (!empty($data['post'])) {
-            if ($data['post']['csrf']
-                !== $data['session']['csrf']
-            ) { //не совершать действие
-                $data['post'] = [];
-                $data['message']
-                    = 'Токены не совпадают. Ваши данные отклонены.';
-            }
+    static function sessionToken(
+        string $sessionToken,
+        string $requestToken
+    ): string {
+        if ($sessionToken === $requestToken) {
+            $sessionToken = self::createToken();
         } else {
-            $data['session']['csrf'] = self::createToken();
+            throw new Exception("Токены не совпадают. Ваши данные отклонены.");
         }
-        return $data;
+        return $sessionToken;
     }
 }
