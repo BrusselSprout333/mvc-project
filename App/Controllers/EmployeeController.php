@@ -5,7 +5,6 @@ class EmployeeController
     private ViewClass $view;
     private EmployeeModel $model;
     private array $sorts;
-    private array $security_data;
 
     function __construct()
     {
@@ -13,19 +12,25 @@ class EmployeeController
         $this->view = new ViewClass('App/Views');
     }
 
-    function SecurityTest()
+    function SecurityTest(array $data)
     {
-        session_start();
-        $this->security_data['post'] = &$_POST;
-        $this->security_data['session'] = &$_SESSION;
-        $this->security_data = SecurityHelper::CheckToken($this->security_data);
+        $sessionToken = $data['session']['csrf'] ?? '';
+        $requestToken = $data['post']['csrf'] ?? '';
+
+        if (empty($sessionToken) && !empty($requestToken)) {
+            throw new Exception("Session token wasn't created. Unable to complete request.");
+        }
+        if (!empty($requestToken)) {
+            $_SESSION['csrf'] = SecurityHelper::sessionToken($sessionToken,
+                $requestToken);
+        }
     }
 
     public function view()
     {
-        $message[0]['message'] = $this->security_data['message'];
-        $data = $this->model->view($this->sorts); //получили данные
-        $this->view->render('ViewTemplateStart', $message);
+        $data = $this->model->view($this->sorts['sort_column'],
+            $this->sorts['sort_method']);
+        $this->view->render('ViewTemplateStart');
         $this->view->render('ListEmployeeView', $data);
         $this->view->render('ViewTemplateEnd');
     }
@@ -37,7 +42,8 @@ class EmployeeController
 
     public function add_DB($data)
     {
-        $this->model->add($data);
+        $this->model->add($data['first-name-add'], $data['last-name'],
+            $data['day-of-birth'], $data['salary']);
     }
 
     public function update($id, $first_name, $last_name, $date, $salary)
@@ -54,7 +60,8 @@ class EmployeeController
 
     public function update_DB($data)
     {
-        $this->model->update($data); //получили данные
+        $this->model->update($data['first-name-update'], $data['last-name'],
+            $data['day-of-birth'], $data['salary'], $data['id']);
     }
 
     public function delete($id)
@@ -75,10 +82,5 @@ class EmployeeController
             $this->sorts['sort_method'] = strtoupper($sorts['sort_method']);
             $this->sorts['sort_column'] = $sorts['sort_column'];
         }
-    }
-
-    public function createTable()
-    {
-        $this->model->create();
     }
 }
