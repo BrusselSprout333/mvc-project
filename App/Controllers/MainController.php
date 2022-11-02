@@ -1,9 +1,18 @@
 <?php
 
 $controller = new EmployeeController();
-$controller->createTable(); //создаем таблицу если её не существует
+Database::getInstance();
 
-$controller->SecurityTest(); //от csrf атак
+session_start();
+$data['session']['csrf'] = $_SESSION['csrf'];
+$data['post']['csrf'] = $_POST['csrf'];
+
+try {
+    $controller->SecurityTest($data); //от csrf атак
+} catch (Exception $message) {
+    echo "You have a problem: " . $message;
+    $_POST = [];
+}
 
 foreach ($_GET as &$item) {
     $item = filter_var(trim($item), FILTER_SANITIZE_FULL_SPECIAL_CHARS);

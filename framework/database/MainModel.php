@@ -6,14 +6,25 @@ abstract class MainModel
 
     function __construct()
     {
-        $this->db = new Database();
+        $this->db = Database::getInstance();
     }
 
-    abstract function view($sorts);
+    abstract function view(string $sort_column, string $sort_method): array;
 
-    abstract function add($data);
+    abstract function add(
+        string $first_name,
+        string $last_name,
+        string $birth_date,
+        float $salary
+    ): void;
 
-    abstract function update($data);
+    abstract function update(
+        string $first_name,
+        string $last_name,
+        string $birth_date,
+        float $salary,
+        int $id
+    ): void;
 
-    abstract function delete($id);
+    abstract function delete(int $id): void;
 }
