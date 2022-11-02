@@ -12,10 +12,10 @@ class EmployeeController
         $this->view = new ViewClass('App/Views');
     }
 
-    function SecurityTest(array $data)
+    function SecurityTest()
     {
-        $sessionToken = $data['session']['csrf'] ?? '';
-        $requestToken = $data['post']['csrf'] ?? '';
+        $sessionToken = $_SESSION['csrf'] ?? '';
+        $requestToken = $_POST['csrf'] ?? '';
 
         if (empty($sessionToken) && !empty($requestToken)) {
             throw new Exception("Session token wasn't created. Unable to complete request.");

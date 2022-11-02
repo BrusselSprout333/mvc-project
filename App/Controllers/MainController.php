@@ -1,14 +1,12 @@
 <?php
 
 $controller = new EmployeeController();
-Database::getInstance();
+Database::getInstance(); //соединение с бд
 
 session_start();
-$data['session']['csrf'] = $_SESSION['csrf'];
-$data['post']['csrf'] = $_POST['csrf'];
 
 try {
-    $controller->SecurityTest($data); //от csrf атак
+    $controller->SecurityTest(); //от csrf атак
 } catch (Exception $message) {
     echo "You have a problem: " . $message;
     $_POST = [];
