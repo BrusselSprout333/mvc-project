@@ -20,3 +20,5 @@ services:
       - MYSQL_ROOT_PASSWORD=root
     volumes:
       - './docker/volume/mysql:/var/lib/mysql'
+    depends_on:
+      - php

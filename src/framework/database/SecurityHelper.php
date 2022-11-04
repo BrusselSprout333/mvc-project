@@ -18,7 +18,7 @@ class SecurityHelper
         string $sessionToken,
         string $requestToken
     ): string {
-        if ($sessionToken === $requestToken) {
+        if (($sessionToken === $requestToken) || empty($sessionToken)) {
             $sessionToken = self::createToken();
         } else {
             throw new Exception("Токены не совпадают. Ваши данные отклонены.");

@@ -3,14 +3,14 @@
 $controller = new EmployeeController();
 Database::getInstance(); //соединение с бд
 
-/*
+session_start();
 try {
     $controller->SecurityTest(); //от csrf атак
 } catch (Exception $message) {
     echo "You have a problem: " . $message;
     $_POST = [];
 }
-*/
+
 foreach ($_GET as &$item) {
     $item = filter_var(trim($item), FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 }
