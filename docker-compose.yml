@@ -1,4 +1,5 @@
 version: '3'
+
 services:
   php:
     build:
@@ -9,16 +10,29 @@ services:
   nginx:
     image: nginx:latest
     ports:
-      - '80:80'
+      - '8000:80'
     volumes:
       - './src:/var/www/html'
       - './docker/nginx/conf.d:/etc/nginx/conf.d'
 
   mysql:
     image: mysql:8
+    restart: unless-stopped
     environment:
       - MYSQL_ROOT_PASSWORD=root
+    ports:
+      - '5506:3006'
     volumes:
       - './docker/volume/mysql:/var/lib/mysql'
-    depends_on:
+    links:
       - php
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    ports:
+      - '8001:80'
+    environment:
+      - PMA_HOST=mysql
+    depends_on:
+      - mysql

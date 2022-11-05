@@ -16,15 +16,13 @@ class EmployeeController
     {
         $sessionToken = $_SESSION['csrf'] ?? '';
         $requestToken = $_POST['csrf'] ?? '';
-        print_r($sessionToken);
-        echo "<br>";
-        print_r($requestToken);
+
         if (empty($sessionToken) && !empty($requestToken)) {
             throw new Exception("Session token wasn't created. Unable to complete request.");
         }
+
         if (!empty($requestToken)
-            || (empty($sessionToken)
-                && empty($requestToken))
+            || (empty($sessionToken) && empty($requestToken))
         ) {
             $_SESSION['csrf'] = SecurityHelper::sessionToken($sessionToken,
                 $requestToken);
@@ -75,8 +73,8 @@ class EmployeeController
     }
 
     public function validateSort(
-        $sort_column,
-        $sort_method
+        ?string $sort_column,
+        ?string $sort_method
     ): void {
         $sorts1 = ['first_name', 'last_name', 'date_of_birth', 'salary'];
         $sorts2 = ['asc', 'desc'];
