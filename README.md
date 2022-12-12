@@ -1,1 +1,1 @@
-MVC project for editing data from MySql table
+MVC project on PHP for editing data from MySql table
