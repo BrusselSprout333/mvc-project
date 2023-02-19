@@ -1,6 +1,6 @@
 <?php
-error_reporting(E_ERROR | E_PARSE);
-//error_reporting(E_ALL);
+error_reporting(0);
+
 require 'autoloader.php';
 
 require "App/Controllers/MainController.php";
